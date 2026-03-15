@@ -1,0 +1,129 @@
+{% extends "marketing/cms/base.html" %}
+{% load form_extras %}
+
+{% block title %}Navigation{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-foreground">Navigation & Footer</h1>
+        <p class="text-muted-foreground">Edit your site's navigation menu and footer</p>
+    </div>
+
+    <form method="post" class="space-y-8">
+        {% csrf_token %}
+
+        <!-- Navigation Section -->
+        <div class="cms-section">
+            <div class="cms-section-header" onclick="toggleSection('nav-section')">
+                <h2 class="cms-section-title">Navigation Menu</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform transition-transform" id="nav-section-icon"><path d="m6 9 6 6 6 6-6"/><path d="m18 15-6-6-6-6"/></svg>
+            </div>
+            <div class="cms-section-content open" id="nav-section">
+                <div class="cms-form-group">
+                    <label class="cms-form-label">Navigation Items (JSON)</label>
+                    <p class="cms-form-hint mb-2">Array of objects with 'label' and 'url' fields. Example: [{"label": "About", "url": "/about/"}, {"label": "Contact", "url": "/contact/"}]</p>
+                    {{ nav_form.items_json|add_class:"cms-json-editor" }}
+                    <p class="cms-form-hint">Edit the JSON to add, remove, or reorder navigation items</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header Buttons Section -->
+        <div class="cms-section">
+            <div class="cms-section-header" onclick="toggleSection('header-buttons-section')">
+                <h2 class="cms-section-title">Header Buttons</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform transition-transform" id="header-buttons-section-icon"><path d="m6 9 6 6 6 6-6"/><path d="m18 15-6-6-6-6"/></svg>
+            </div>
+            <div class="cms-section-content" id="header-buttons-section">
+                <div class="cms-form-group">
+                    <label class="cms-form-label">Header Buttons</label>
+                    <p class="cms-form-hint mb-4">Add CTA buttons to the header navigation (e.g., "Book a Demo", "Get Started").</p>
+                    {{ nav_form.header_buttons_json }}
+                    <div data-header-buttons-builder class="space-y-4">
+                        <!-- Buttons will be rendered here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="cms-section">
+            <div class="cms-section-header" onclick="toggleSection('footer-section')">
+                <h2 class="cms-section-title">Footer</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform transition-transform" id="footer-section-icon"><path d="m6 9 6 6 6 6-6"/><path d="m18 15-6-6-6-6"/></svg>
+            </div>
+            <div class="cms-section-content" id="footer-section">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label">Columns (JSON)</label>
+                        <p class="cms-form-hint mb-2">Array of footer columns. Each column has 'title' and 'links' array.</p>
+                        {{ footer_form.columns_json|add_class:"cms-json-editor" }}
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="cms-form-group">
+                            <label class="cms-form-label">CTA Title</label>
+                            {{ footer_form.cta_title|add_class:"cms-form-input" }}
+                        </div>
+
+                        <div class="cms-form-group">
+                            <label class="cms-form-label">CTA Body</label>
+                            {{ footer_form.cta_body|add_class:"cms-form-textarea" }}
+                        </div>
+
+                        <div class="cms-form-group">
+                            <label class="cms-form-label">CTA Button Label</label>
+                            {{ footer_form.cta_button_label|add_class:"cms-form-input" }}
+                        </div>
+
+                        <div class="cms-form-group">
+                            <label class="cms-form-label">CTA Button URL</label>
+                            {{ footer_form.cta_button_url|add_class:"cms-form-input" }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cms-form-group mt-6">
+                    <label class="cms-form-label">Legal Text</label>
+                    {{ footer_form.legal_text|add_class:"cms-form-textarea" }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="cms-action-bar cms-action-bar-bottom">
+            <div class="cms-action-bar-left">
+                <a href="{% url 'cms-dashboard' %}" class="cms-btn cms-btn-ghost">Cancel</a>
+            </div>
+            <div class="cms-action-bar-right">
+                <button type="submit" class="cms-btn cms-btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleSection(sectionId) {
+    const content = document.getElementById(sectionId);
+    const icon = document.getElementById(sectionId + '-icon');
+
+    if (content) {
+        content.classList.toggle('open');
+        if (icon) {
+            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+    }
+}
+
+// Auto-open navigation section on load
+document.addEventListener('DOMContentLoaded', function() {
+    const navSection = document.getElementById('nav-section');
+    const navIcon = document.getElementById('nav-section-icon');
+    if (navSection) navSection.classList.add('open');
+    if (navIcon) navIcon.style.transform = 'rotate(180deg)';
+});
+</script>
+
+<script src="{% static 'js/cms-header-buttons.js' %}"></script>
+{% endblock %}

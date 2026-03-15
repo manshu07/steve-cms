@@ -1,0 +1,62 @@
+{% extends "marketing/base.html" %}
+
+{% block content %}
+<section class="section-padding bg-background">
+    <div class="max-w-6xl mx-auto px-6">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Blog</h1>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">Insights on AI-powered debt collection, compliance, and operational efficiency.</p>
+        </header>
+
+        {% if categories %}
+        <!-- Category Filter Chips -->
+        <div class="flex flex-wrap justify-center gap-2 mb-12">
+            <a href="/blog/" class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors {% if not request.GET.category %}bg-primary text-primary-foreground{% else %}bg-secondary text-muted-foreground hover:bg-secondary/80{% endif %}">All Posts</a>
+            {% for category in categories %}
+            <a href="/blog/?category={{ category.slug }}" class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors {% if request.GET.category == category.slug %}bg-primary text-primary-foreground{% else %}bg-secondary text-muted-foreground hover:bg-secondary/80{% endif %}">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Blog Posts Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for post in posts %}
+            <article class="cms-post-card bg-card rounded-xl border border-border overflow-hidden hover:border-primary/30 hover:shadow-md transition-all">
+                {% if post.cover_image %}
+                <a href="{{ post.get_absolute_url }}" class="block aspect-video overflow-hidden">
+                    <img src="{{ post.cover_image }}" alt="{{ post.title }}" class="w-full h-full object-cover">
+                </a>
+                {% endif %}
+
+                <div class="p-6">
+                    {% if post.categories.all %}
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        {% for category in post.categories.all %}
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent text-accent-foreground">{{ category.name }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <h2 class="text-xl font-bold text-foreground mb-2">
+                        <a href="{{ post.get_absolute_url }}" class="hover:text-primary transition-colors">{{ post.title }}</a>
+                    </h2>
+
+                    <p class="text-sm text-muted-foreground mb-4 line-clamp-3">{{ post.computed_excerpt }}</p>
+
+                    <div class="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{{ post.publish_at|date:"F j, Y" }}</span>
+                        {% if post.author_name %}
+                        <span>{{ post.author_name }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-muted-foreground">No posts found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,330 @@
+{% load static %}
+{% load form_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'assets/logo-icon.png' %}">
+    <title>{{ seo.title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <meta name="description" content="{{ seo.description }}">
+    {% if seo.og_title %}
+    <meta property="og:title" content="{{ seo.og_title }}">
+    {% endif %}
+    {% if seo.og_description %}
+    <meta property="og:description" content="{{ seo.og_description }}">
+    {% endif %}
+    {% if seo.image %}
+    <meta property="og:image" content="{{ seo.image }}">
+    {% endif %}
+    {% if seo.url %}
+    <meta property="og:url" content="{{ seo.url }}">
+    {% endif %}
+    <meta property="og:type" content="website">
+    {% if seo.url %}
+    <link rel="canonical" href="{{ seo.url }}">
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/marketing.css' %}">
+    {% if page and page.slug == 'home' %}
+    <link rel="stylesheet" href="{% static 'css/styles-reference.css' %}">
+    {% endif %}
+</head>
+<body class="min-h-screen bg-background text-foreground">
+    {% if not page %}
+    <!-- Navigation (no page object) -->
+    <header class="sticky top-0 z-50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="{% static 'assets/logo-icon.png' %}" alt="BeyondCode AI" class="h-8">
+                    <span class="font-bold text-foreground text-lg tracking-tight">BeyondCode</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-6">
+                    {% if nav_menu and nav_menu.items %}
+                    <nav class="flex items-center gap-6">
+                        {% for item in nav_menu.items %}
+                        {% if item.url %}
+                        <a href="{{ item.url }}" class="text-sm text-muted-foreground hover:text-foreground transition-colors">{{ item.label }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </nav>
+                    {% endif %}
+
+                    <!-- Header Buttons -->
+                    {% if nav_menu and nav_menu.header_buttons %}
+                    <div class="flex items-center gap-3">
+                        {% for button in nav_menu.header_buttons %}
+                        {% if button.url %}
+                        <a href="{{ button.url }}"
+                           class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold ring-offset-background transition-all duration-300 hover:shadow-lg h-11 px-6 py-2 text-sm
+                           {% if button.style == 'secondary' %}border border-border bg-transparent text-foreground hover:bg-secondary hover:border-secondary{% elif button.style == 'ghost' %}bg-transparent text-muted-foreground hover:text-foreground hover:bg-secondary{% else %}bg-primary text-primary-foreground hover:bg-primary/90{% endif %}"
+                           {% if button.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                            {{ button.label }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden p-2 text-muted-foreground hover:text-foreground" aria-label="Toggle menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-card">
+            <nav class="px-6 py-4 space-y-3">
+                {% if nav_menu and nav_menu.items %}
+                {% for item in nav_menu.items %}
+                {% if item.url %}
+                <a href="{{ item.url }}" class="block text-sm text-muted-foreground hover:text-foreground transition-colors py-2">{{ item.label }}</a>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+
+                <!-- Mobile Header Buttons -->
+                {% if nav_menu and nav_menu.header_buttons %}
+                <div class="pt-4 space-y-2">
+                    {% for button in nav_menu.header_buttons %}
+                    {% if button.url %}
+                    <a href="{{ button.url }}"
+                       class="block w-full text-center {% if button.style == 'secondary' %}border border-border bg-transparent text-foreground hover:bg-secondary hover:border-secondary{% elif button.style == 'ghost' %}bg-transparent text-muted-foreground hover:text-foreground hover:bg-secondary{% else %}bg-primary text-primary-foreground hover:bg-primary/90{% endif %} inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold ring-offset-background transition-all duration-300 hover:shadow-lg h-11 px-6 py-2 text-sm"
+                       {% if button.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                        {{ button.label }}
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    {% elif page.slug != 'home' %}
+    <!-- Navigation (not homepage) -->
+    <header class="sticky top-0 z-50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="{% static 'assets/logo-icon.png' %}" alt="BeyondCode AI" class="h-8">
+                    <span class="font-bold text-foreground text-lg tracking-tight">BeyondCode</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-6">
+                    {% if nav_menu and nav_menu.items %}
+                    <nav class="flex items-center gap-6">
+                        {% for item in nav_menu.items %}
+                        {% if item.url %}
+                        <a href="{{ item.url }}" class="text-sm text-muted-foreground hover:text-foreground transition-colors">{{ item.label }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </nav>
+                    {% endif %}
+
+                    <!-- Header Buttons -->
+                    {% if nav_menu and nav_menu.header_buttons %}
+                    <div class="flex items-center gap-3">
+                        {% for button in nav_menu.header_buttons %}
+                        {% if button.url %}
+                        <a href="{{ button.url }}"
+                           class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold ring-offset-background transition-all duration-300 hover:shadow-lg h-11 px-6 py-2 text-sm
+                           {% if button.style == 'secondary' %}border border-border bg-transparent text-foreground hover:bg-secondary hover:border-secondary{% elif button.style == 'ghost' %}bg-transparent text-muted-foreground hover:text-foreground hover:bg-secondary{% else %}bg-primary text-primary-foreground hover:bg-primary/90{% endif %}"
+                           {% if button.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                            {{ button.label }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden p-2 text-muted-foreground hover:text-foreground" aria-label="Toggle menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-card">
+            <nav class="px-6 py-4 space-y-3">
+                {% if nav_menu and nav_menu.items %}
+                {% for item in nav_menu.items %}
+                {% if item.url %}
+                <a href="{{ item.url }}" class="block text-sm text-muted-foreground hover:text-foreground transition-colors py-2">{{ item.label }}</a>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+
+                <!-- Mobile Header Buttons -->
+                {% if nav_menu and nav_menu.header_buttons %}
+                <div class="pt-4 space-y-2">
+                    {% for button in nav_menu.header_buttons %}
+                    {% if button.url %}
+                    <a href="{{ button.url }}"
+                       class="block w-full text-center {% if button.style == 'secondary' %}border border-border bg-transparent text-foreground hover:bg-secondary hover:border-secondary{% elif button.style == 'ghost' %}bg-transparent text-muted-foreground hover:text-foreground hover:bg-secondary{% else %}bg-primary text-primary-foreground hover:bg-primary/90{% endif %} inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold ring-offset-background transition-all duration-300 hover:shadow-lg h-11 px-6 py-2 text-sm"
+                       {% if button.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                        {{ button.label }}
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="min-h-screen">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer (skip for homepage as it's included in the content) -->
+    {% if footer and not page %}
+    <footer class="py-12 bg-card border-t border-border">
+        <div class="max-w-6xl mx-auto px-6">
+            {% if footer.columns %}
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                {% for column in footer.columns %}
+                <div>
+                    {% if column.title %}
+                    <h3 class="font-bold text-foreground mb-4">{{ column.title }}</h3>
+                    {% endif %}
+                    {% if column.links %}
+                    <ul class="space-y-2">
+                        {% for link in column.links %}
+                        <li><a href="{{ link.url }}" class="text-sm text-muted-foreground hover:text-foreground transition-colors">{{ link.label }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="{% static 'assets/logo-icon.png' %}" alt="BeyondCode" class="w-6 h-6">
+                    <span class="font-bold text-foreground text-sm">BeyondCode AI</span>
+                </div>
+                {% if footer.legal_text %}
+                <p class="text-xs text-muted-foreground">{{ footer.legal_text }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+    {% elif footer and page.slug != 'home' %}
+    <footer class="py-12 bg-card border-t border-border">
+        <div class="max-w-6xl mx-auto px-6">
+            {% if footer.columns %}
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                {% for column in footer.columns %}
+                <div>
+                    {% if column.title %}
+                    <h3 class="font-bold text-foreground mb-4">{{ column.title }}</h3>
+                    {% endif %}
+                    {% if column.links %}
+                    <ul class="space-y-2">
+                        {% for link in column.links %}
+                        <li><a href="{{ link.url }}" class="text-sm text-muted-foreground hover:text-foreground transition-colors">{{ link.label }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="{% static 'assets/logo-icon.png' %}" alt="BeyondCode" class="w-6 h-6">
+                    <span class="font-bold text-foreground text-sm">BeyondCode AI</span>
+                </div>
+                {% if footer.legal_text %}
+                <p class="text-xs text-muted-foreground">{{ footer.legal_text }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+    {% endif %}
+
+    <!-- Mobile Menu Script (skip for homepage) -->
+    {% if not page %}
+    <script>
+        (function() {
+            const button = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+
+            if (button && menu) {
+                button.addEventListener('click', function() {
+                    menu.classList.toggle('hidden');
+                });
+
+                // Close menu on escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        menu.classList.add('hidden');
+                    }
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!button.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            }
+        })();
+    </script>
+    {% elif page.slug != 'home' %}
+    <script>
+        (function() {
+            const button = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+
+            if (button && menu) {
+                button.addEventListener('click', function() {
+                    menu.classList.toggle('hidden');
+                });
+
+                // Close menu on escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        menu.classList.add('hidden');
+                    }
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!button.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            }
+        })();
+    </script>
+    {% endif %}
+
+    {% block scripts %}
+    {% endblock %}
+
+    {% if page and page.slug == 'home' %}
+    <script src="{% static 'js/main-reference.js' %}"></script>
+    {% endif %}
+</body>
+</html>

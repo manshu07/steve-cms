@@ -1,0 +1,137 @@
+{% extends "marketing/cms/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-foreground">Dashboard</h1>
+        <p class="text-muted-foreground">Welcome back! Here's what's happening with your site.</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="cms-stats-grid">
+        <div class="cms-stat-card">
+            <div class="cms-stat-label">Total Pages</div>
+            <div class="cms-stat-value">{{ page_count }}</div>
+        </div>
+        <div class="cms-stat-card">
+            <div class="cms-stat-label">Total Posts</div>
+            <div class="cms-stat-value">{{ post_count }}</div>
+        </div>
+        <div class="cms-stat-card">
+            <div class="cms-stat-label">Published</div>
+            <div class="cms-stat-value text-green-600">{{ published_count }}</div>
+        </div>
+        <div class="cms-stat-card">
+            <div class="cms-stat-label">Drafts</div>
+            <div class="cms-stat-value text-muted-foreground">{{ draft_count }}</div>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Recent Pages -->
+        <div>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-foreground">Recent Pages</h2>
+                <a href="{% url 'cms-page-list' %}" class="text-sm text-primary hover:underline">View all</a>
+            </div>
+
+            {% if pages %}
+            <div class="cms-table-container">
+                <table class="cms-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for page in pages %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'cms-page-edit' page.id %}" class="text-foreground hover:text-primary font-medium">{{ page.title }}</a>
+                            </td>
+                            <td>
+                                <span class="cms-badge {% if page.status == 'published' %}cms-badge-published{% elif page.status == 'draft' %}cms-badge-draft{% else %}cms-badge-scheduled{% endif %}">
+                                    {{ page.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="text-muted-foreground text-sm">{{ page.updated_at|timesince }} ago</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-12 bg-card border border-border rounded-xl">
+                <p class="text-muted-foreground mb-4">No pages yet</p>
+                <a href="{% url 'cms-page-create' %}" class="cms-btn cms-btn-primary">Create your first page</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Recent Posts -->
+        <div>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-foreground">Recent Posts</h2>
+                <a href="{% url 'cms-post-list' %}" class="text-sm text-primary hover:underline">View all</a>
+            </div>
+
+            {% if posts %}
+            <div class="cms-table-container">
+                <table class="cms-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'cms-post-edit' post.id %}" class="text-foreground hover:text-primary font-medium">{{ post.title }}</a>
+                            </td>
+                            <td>
+                                <span class="cms-badge {% if post.status == 'published' %}cms-badge-published{% elif post.status == 'draft' %}cms-badge-draft{% else %}cms-badge-scheduled{% endif %}">
+                                    {{ post.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="text-muted-foreground text-sm">{{ post.updated_at|timesince }} ago</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-12 bg-card border border-border rounded-xl">
+                <p class="text-muted-foreground mb-4">No posts yet</p>
+                <a href="{% url 'cms-post-create' %}" class="cms-btn cms-btn-primary">Create your first post</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mt-8 p-6 bg-card border border-border rounded-xl">
+        <h2 class="text-lg font-semibold text-foreground mb-4">Quick Actions</h2>
+        <div class="flex flex-wrap gap-3">
+            <a href="{% url 'cms-page-create' %}" class="cms-btn cms-btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                New Page
+            </a>
+            <a href="{% url 'cms-post-create' %}" class="cms-btn cms-btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                New Post
+            </a>
+            <a href="{% url 'cms-navigation' %}" class="cms-btn cms-btn-outline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2H2"/><path d="M7 23v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M11 23v-6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v6"/></svg>
+                Edit Navigation
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

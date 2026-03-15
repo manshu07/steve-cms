@@ -1,0 +1,75 @@
+# Pre-commit hooks for automated testing
+# Install: pip install pre-commit
+# Setup: pre-commit install
+
+repos:
+  - repo: local
+    hooks:
+      - id: django-smoke-tests
+        name: Run Django smoke tests
+        entry: py manage.py test marketing.tests.test_smoke_working --settings=beyondcode_cms.test_settings
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: django-integration-tests
+        name: Run Django integration tests
+        entry: py manage.py test marketing.tests.test_cms_integration --settings=beyondcode_cms.test_settings
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: check-migrations
+        name: Check for unapplied migrations
+        entry: py manage.py makemigrations --check --dry-run
+        language: system
+        pass_filenames: false
+
+      - id: check-model-fields
+        name: Verify model field integrity
+        entry: py -c "
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'beyondcode_cms.test_settings')
+import django
+django.setup()
+from marketing.models import MediaAsset
+asset = MediaAsset(file='test', alt_text='test')
+assert hasattr(asset, 'created_at'), 'MediaAsset missing created_at'
+assert not hasattr(asset, 'uploaded_at'), 'MediaAsset should not have uploaded_at'
+print('✅ Model fields verified')
+"
+        language: system
+        pass_filenames: false
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-toml
+      - id: debug-statements
+
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        language_version: python3.11
+        args: ['--line-length=100']
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: ['--max-line-length=100', '--ignore=E501,W503']
+        additional_dependencies: [
+          'flake8-docstrings',
+          'flake8-bugbear',
+        ]
+
+# Minimum versions
+minimum_pre_commit_version: 2.9.0

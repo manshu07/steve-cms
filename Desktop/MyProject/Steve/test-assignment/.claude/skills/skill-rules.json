@@ -1,0 +1,1141 @@
+{
+    "version": "1.0",
+    "description": "Skill activation triggers for Claude Code. Controls when skills automatically suggest or block actions.",
+    "skills": {
+        "skill-developer": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Meta-skill for creating and managing Claude Code skills",
+            "promptTriggers": {
+                "keywords": [
+                    "skill system",
+                    "create skill",
+                    "add skill",
+                    "skill triggers",
+                    "skill rules",
+                    "hook system",
+                    "skill development",
+                    "skill-rules.json"
+                ],
+                "intentPatterns": [
+                    "(how do|how does|explain).*?skill",
+                    "(create|add|modify|build).*?skill",
+                    "skill.*?(work|trigger|activate|system)"
+                ]
+            }
+        },
+        "backend-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Backend development patterns for Node.js/Express/TypeScript",
+            "promptTriggers": {
+                "keywords": [
+                    "backend",
+                    "backend development",
+                    "microservice",
+                    "controller",
+                    "service",
+                    "repository",
+                    "route",
+                    "routing",
+                    "express",
+                    "API",
+                    "endpoint",
+                    "middleware",
+                    "validation",
+                    "Zod",
+                    "Prisma",
+                    "database access",
+                    "BaseController",
+                    "dependency injection",
+                    "unifiedConfig",
+                    "configuration"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build).*?(route|endpoint|API|controller|service|repository)",
+                    "(fix|handle|debug).*?(error|exception|backend)",
+                    "(add|implement).*?(middleware|validation|error.*?handling)",
+                    "(organize|structure|refactor).*?(backend|service|API)",
+                    "(how to|best practice).*?(backend|route|controller|service)"
+                ]
+            }
+        },
+        "frontend-dev-guidelines": {
+            "type": "guardrail",
+            "enforcement": "block",
+            "priority": "high",
+            "description": "React/TypeScript best practices including MUI v7 compatibility",
+            "promptTriggers": {
+                "keywords": [
+                    "component",
+                    "react component",
+                    "UI",
+                    "interface",
+                    "page",
+                    "modal",
+                    "dialog",
+                    "form",
+                    "MUI",
+                    "Material-UI",
+                    "Grid",
+                    "styling",
+                    "frontend",
+                    "React"
+                ],
+                "intentPatterns": [
+                    "(create|add|make|build|update|modify|edit).*?(component|UI|page|modal|dialog|form)",
+                    "(how to|best practice).*?(component|react|MUI)",
+                    "(style|design|layout).*?(component|UI)"
+                ]
+            },
+            "blockMessage": "Frontend guidelines required - use 'frontend-dev-guidelines' skill",
+            "skipConditions": {
+                "sessionSkillUsed": true,
+                "fileMarkers": ["@skip-validation"],
+                "envOverride": "SKIP_FRONTEND_GUIDELINES"
+            }
+        },
+        "route-tester": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Testing authenticated API routes with JWT cookie-based auth",
+            "promptTriggers": {
+                "keywords": [
+                    "test route",
+                    "test endpoint",
+                    "test API",
+                    "route testing",
+                    "API testing",
+                    "authenticated route",
+                    "JWT testing",
+                    "cookie auth",
+                    "test with auth"
+                ],
+                "intentPatterns": [
+                    "(test|debug|verify).*?(route|endpoint|API)",
+                    "(how to|how do I).*?test.*?(route|endpoint|API)",
+                    "test.*?(authenticated|auth|JWT|cookie)"
+                ]
+            }
+        },
+        "error-tracking": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Sentry error tracking and performance monitoring patterns",
+            "promptTriggers": {
+                "keywords": [
+                    "error handling",
+                    "exception",
+                    "sentry",
+                    "error tracking",
+                    "captureException",
+                    "monitoring",
+                    "performance tracking"
+                ],
+                "intentPatterns": [
+                    "(add|create|implement|setup).*?(error handling|sentry|error tracking)",
+                    "(fix|handle|catch).*?(error|exception)",
+                    "(how to|best practice).*?(error|sentry|monitoring)"
+                ]
+            }
+        },
+        "python-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Comprehensive Python development guidelines for backend development",
+            "promptTriggers": {
+                "keywords": [
+                    "python",
+                    "python development",
+                    "pyproject.toml",
+                    "virtual environment",
+                    "venv",
+                    "pip",
+                    "poetry",
+                    "uv",
+                    "pydantic",
+                    "asyncio",
+                    "pytest",
+                    "mypy",
+                    "ruff",
+                    "type hints",
+                    "python testing",
+                    "python async"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build).*?(python|module|package)",
+                    "(setup|configure).*?(python|project|environment)",
+                    "(how to|best practice).*?(python|async|testing)",
+                    "(fix|debug).*?(python|type|mypy)"
+                ]
+            }
+        },
+        "performance-optimization": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Performance optimization guidelines including code optimization, database query optimization, caching strategies, lazy loading, and performance monitoring",
+            "promptTriggers": {
+                "keywords": [
+                    "performance",
+                    "optimization",
+                    "optimize",
+                    "caching",
+                    "cache",
+                    "lazy loading",
+                    "code splitting",
+                    "bundle size",
+                    "database optimization",
+                    "query optimization",
+                    "n+1 query",
+                    "profiling",
+                    "memory leak",
+                    "latency",
+                    "load time",
+                    "web vitals",
+                    "response time",
+                    "slow query",
+                    "indexing"
+                ],
+                "intentPatterns": [
+                    "(optimize|improve).*?(performance|speed|latency)",
+                    "(reduce|decrease).*(time|size|load)",
+                    "(cache|caching).*(data|query|response)",
+                    "(profile|measure).*(performance|code)",
+                    "(fix|resolve).*(memory leak|slow query)",
+                    "(implement|add).*(lazy load|code split)"
+                ]
+            }
+        },
+        "testing-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Comprehensive testing guidelines including unit testing, integration testing, E2E testing, test automation, TDD, and testing frameworks",
+            "promptTriggers": {
+                "keywords": [
+                    "testing",
+                    "test",
+                    "unit test",
+                    "integration test",
+                    "e2e test",
+                    "end to end test",
+                    "jest",
+                    "vitest",
+                    "playwright",
+                    "test coverage",
+                    "tdd",
+                    "test driven development",
+                    "mocking",
+                    "assertions",
+                    "test runner",
+                    "testing framework",
+                    "write tests",
+                    "test automation"
+                ],
+                "intentPatterns": [
+                    "(write|create|add).*?(test|spec)",
+                    "(test|testing).*(endpoint|function|component)",
+                    "(set up|configure).*(testing|jest|playwright)",
+                    "(measure|check).*(test coverage|coverage)",
+                    "(implement|add).*(mock|stub)"
+                ]
+            }
+        },
+        "django-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Django development guidelines for web applications and APIs",
+            "promptTriggers": {
+                "keywords": [
+                    "django",
+                    "django rest framework",
+                    "DRF",
+                    "django models",
+                    "django views",
+                    "django serializer",
+                    "django urls",
+                    "django middleware",
+                    "django authentication",
+                    "django ORM",
+                    "manage.py",
+                    "migrations",
+                    "django admin"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build).*?(django|model|view|serializer|API)",
+                    "(setup|configure).*?(django|project)",
+                    "(how to|best practice).*?(django|DRF)",
+                    "(fix|debug).*?(django|migrations)"
+                ]
+            }
+        },
+        "fastapi-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "FastAPI development guidelines for high-performance APIs",
+            "promptTriggers": {
+                "keywords": [
+                    "fastapi",
+                    "fast api",
+                    "pydantic model",
+                    "APIRouter",
+                    "dependency injection",
+                    "path operation",
+                    "fastapi middleware",
+                    "fastapi authentication",
+                    "uvicorn",
+                    "fastapi testing"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build).*?(fastapi|route|endpoint|API)",
+                    "(setup|configure).*?(fastapi|project)",
+                    "(how to|best practice).*?(fastapi|pydantic)",
+                    "(fix|debug).*?(fastapi|pydantic|validation)"
+                ]
+            }
+        },
+        "pm-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Product management guidelines for planning, documentation, and stakeholder communication",
+            "promptTriggers": {
+                "keywords": [
+                    "PRD",
+                    "product requirements",
+                    "user story",
+                    "acceptance criteria",
+                    "sprint planning",
+                    "roadmap",
+                    "backlog",
+                    "stakeholder",
+                    "product manager",
+                    "PM",
+                    "feature request",
+                    "product roadmap",
+                    "sprint",
+                    "epic",
+                    "user stories",
+                    "product metrics",
+                    "KPIs",
+                    "product goals"
+                ],
+                "intentPatterns": [
+                    "(create|write|draft).*?(PRD|requirements|user story|roadmap)",
+                    "(plan|organize).*?(sprint|release|roadmap)",
+                    "(how to|best practice).*?(product management|sprint|roadmap)",
+                    "(prioritize|prioritization).*?(features|backlog)",
+                    "(communicate|update).*?stakeholder"
+                ]
+            }
+        },
+        "cto-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Technical leadership guidelines for architecture, team management, and engineering excellence",
+            "promptTriggers": {
+                "keywords": [
+                    "architecture decision",
+                    "ADR",
+                    "technical debt",
+                    "team scaling",
+                    "hiring engineers",
+                    "security standards",
+                    "incident response",
+                    "vendor management",
+                    "CTO",
+                    "tech lead",
+                    "engineering manager",
+                    "build vs buy",
+                    "technology selection",
+                    "engineering culture",
+                    "code review standards",
+                    "tech roadmap"
+                ],
+                "intentPatterns": [
+                    "(make|review).*?(architecture|technical).*?decision",
+                    "(manage|reduce).*?technical.*?debt",
+                    "(hire|scale|grow).*?(engineering|team|developer)",
+                    "(handle|respond).*?incident",
+                    "(evaluate|select|choose).*?(vendor|technology|tool)",
+                    "(build vs buy|make vs buy).*?decision"
+                ]
+            }
+        },
+        "shadcn-ui-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Default design system using shadcn-ui, Tailwind CSS, and Inter font for consistent UI",
+            "promptTriggers": {
+                "keywords": [
+                    "shadcn",
+                    "shadcn-ui",
+                    "tailwind",
+                    "tailwind css",
+                    "UI component",
+                    "button",
+                    "card",
+                    "dialog",
+                    "form input",
+                    "inter font",
+                    "design system"
+                ],
+                "intentPatterns": [
+                    "(create|build|add).*?(component|button|card|dialog|form)",
+                    "(style|design).*?(component|UI|interface)",
+                    "(use|implement).*?(shadcn|tailwind)",
+                    "(create|build).*?(frontend|UI|interface)"
+                ]
+            }
+        },
+        "security-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Security best practices for authentication, authorization, data protection, OWASP compliance, and vulnerability prevention",
+            "promptTriggers": {
+                "keywords": [
+                    "security",
+                    "authentication",
+                    "authorization",
+                    "owasp",
+                    "vulnerability",
+                    "injection",
+                    "xss",
+                    "csrf",
+                    "sql injection",
+                    "password security",
+                    "jwt security",
+                    "encryption",
+                    "data protection",
+                    "secrets management",
+                    "rate limiting",
+                    "security headers",
+                    "input validation",
+                    "sanitization"
+                ],
+                "intentPatterns": [
+                    "(secure|protect).*?(authentication|endpoint|api)",
+                    "(prevent|stop).*?(vulnerability|attack|xss|injection)",
+                    "(implement|add).*?(security|auth|validation)",
+                    "(hash|encrypt).*?(password|data)",
+                    "(setup|configure).*?(jwt|oauth)"
+                ]
+            }
+        },
+        "browser-automation": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Browser automation with Playwright/Puppeteer for web scraping, testing, and automated workflows",
+            "promptTriggers": {
+                "keywords": [
+                    "playwright",
+                    "puppeteer",
+                    "browser automation",
+                    "web scraping",
+                    "scrape",
+                    "screenshot",
+                    "E2E test",
+                    "end to end test",
+                    "browser test",
+                    "automate browser",
+                    "page click",
+                    "page fill"
+                ],
+                "intentPatterns": [
+                    "(automate|automation).*?(browser|web|page)",
+                    "(scrape|extract).*?(website|page|data)",
+                    "(test|testing).*?(browser|e2e|end.to.end)",
+                    "(take|capture).*?(screenshot|screenshot)",
+                    "(click|fill|navigate).*?(page|browser|website)"
+                ]
+            }
+        },
+        "devops-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "DevOps and infrastructure guidelines for CI/CD pipelines, Docker containers, GitHub Actions, deployment strategies, and infrastructure automation",
+            "promptTriggers": {
+                "keywords": [
+                    "devops",
+                    "deployment",
+                    "deploy",
+                    "docker",
+                    "dockerfile",
+                    "docker-compose",
+                    "ci/cd",
+                    "cicd",
+                    "github actions",
+                    "workflow",
+                    "pipeline",
+                    "infrastructure",
+                    "infrastructure as code",
+                    "terraform",
+                    "kubernetes",
+                    "k8s",
+                    "container",
+                    "containerization",
+                    "monitoring",
+                    "logging",
+                    "secrets management",
+                    "environment variables",
+                    "production",
+                    "staging",
+                    "health check"
+                ],
+                "intentPatterns": [
+                    "(create|setup|configure).*?(deployment|pipeline|ci|cd)",
+                    "(deploy|release).*?(production|staging)",
+                    "(write|create).*?(dockerfile|docker-compose)",
+                    "(setup|configure).*?(github actions|workflow)",
+                    "(manage|deploy).*?(kubernetes|k8s|terraform)",
+                    "(monitor|log).*?(application|service)",
+                    "(setup|configure).*?(environment|env vars)"
+                ]
+            }
+        },
+        "pricing-master": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "SaaS Pricing Expert Agent for designing value-based pricing strategies, tiered pricing, freemium models, and monetization",
+            "promptTriggers": {
+                "keywords": [
+                    "pricing",
+                    "pricing strategy",
+                    "saas pricing",
+                    "price my product",
+                    "pricing model",
+                    "monetization",
+                    "revenue model",
+                    "subscription pricing",
+                    "freemium",
+                    "tiered pricing",
+                    "usage-based pricing",
+                    "per-seat pricing",
+                    "value metric",
+                    "pricing tiers",
+                    "ACV",
+                    "ARR",
+                    "pricing page",
+                    "charge for product",
+                    "how much to charge",
+                    "pricing optimization",
+                    "packaging strategy",
+                    "upgrade paths",
+                    "price anchor",
+                    "pricing psychology",
+                    "A/B test pricing",
+                    "monetize AI",
+                    "AI pricing",
+                    "credit-based pricing",
+                    "outcome-based pricing"
+                ],
+                "intentPatterns": [
+                    "(design|create|build).*?(pricing|pricing strategy|pricing model)",
+                    "(how much|what price).*(charge|price|ask for)",
+                    "(monetize|monetization).*?(product|feature|AI)",
+                    "(price|pricing).*(strategy|model|tier|page)",
+                    "(optimize|improve|fix).*?(pricing|conversion|revenue)",
+                    "(add|create).*?(pricing|monetization|subscription)",
+                    "(value metric|upgrade path|pricing tier)"
+                ]
+            }
+        },
+        "coding-standards": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Project coding standards and best practices for TypeScript, React, Express, and general development",
+            "promptTriggers": {
+                "keywords": [
+                    "coding standards",
+                    "code style",
+                    "style guide",
+                    "conventions",
+                    "linting",
+                    "eslint",
+                    "prettier",
+                    "code formatting",
+                    "naming conventions",
+                    "code quality",
+                    "best practices",
+                    "consistent code",
+                    "file organization",
+                    "code structure",
+                    "typescript standards",
+                    "react standards"
+                ],
+                "intentPatterns": [
+                    "(how to|what are).*?(coding standards|code style|conventions)",
+                    "(format|lint|check).*(code|style)",
+                    "(write|create).*?(consistent|standardized).*(code)",
+                    "(follow|use).*(coding|style|convention)",
+                    "(set up|configure).*(eslint|prettier|linting)",
+                    "(review|check).*(code quality|style)"
+                ]
+            }
+        },
+        "article-writing": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Write articles, guides, blog posts, tutorials, newsletters, and long-form content with authentic voice and concrete credibility",
+            "promptTriggers": {
+                "keywords": [
+                    "blog post",
+                    "article",
+                    "guide",
+                    "tutorial",
+                    "newsletter",
+                    "essay",
+                    "write",
+                    "writing",
+                    "content",
+                    "draft",
+                    "publish",
+                    "long-form",
+                    "content marketing",
+                    "launch post",
+                    "announcement",
+                    "voice",
+                    "tone",
+                    "style",
+                    "brand voice"
+                ],
+                "intentPatterns": [
+                    "(write|create|draft).*(blog|article|guide|tutorial|newsletter|content)",
+                    "(publish|post).*(article|blog|content)",
+                    "(help me|how to).*(write|create|draft)",
+                    "(turn|transform).*(notes|transcript|research).*(into|to).*(article|post)",
+                    "(match|sound like).*(voice|tone|style)",
+                    "(launch|announce).*(product|feature|release)"
+                ]
+            }
+        },
+        "content-engine": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Create platform-native content systems for X, LinkedIn, TikTok, YouTube, newsletters, and repurposed multi-platform campaigns",
+            "promptTriggers": {
+                "keywords": [
+                    "social post",
+                    "tweet",
+                    "x post",
+                    "linkedin",
+                    "thread",
+                    "tiktok",
+                    "reels",
+                    "shorts",
+                    "video script",
+                    "youtube",
+                    "content calendar",
+                    "repurpose",
+                    "cross-post",
+                    "multi-platform",
+                    "social media",
+                    "launch content",
+                    "campaign",
+                    "social strategy",
+                    "content strategy",
+                    "viral content",
+                    "content distribution"
+                ],
+                "intentPatterns": [
+                    "(create|write|make).*(tweet|post|content).*(x|linkedin|tiktok|youtube)",
+                    "(turn|adapt|repurpose).*(article|video|content).*(into|for).*(social|platform)",
+                    "(create|build).*(content|social).*(campaign|strategy|calendar)",
+                    "(write|script).*(tiktok|youtube|video)",
+                    "(post|publish).*(across|multiple).*(platforms|channels)",
+                    "(go viral|content distribution|social strategy)"
+                ]
+            }
+        },
+        "frontend-slides": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files",
+            "promptTriggers": {
+                "keywords": [
+                    "presentation",
+                    "slides",
+                    "deck",
+                    "talk",
+                    "pitch deck",
+                    "powerpoint",
+                    "ppt",
+                    "pptx",
+                    "html presentation",
+                    "web slides",
+                    "keynote",
+                    "workshop",
+                    "conference",
+                    "convert ppt",
+                    "presentation design",
+                    "slide design"
+                ],
+                "intentPatterns": [
+                    "(create|build|make|design).*(presentation|slides|deck)",
+                    "(convert|turn).*(ppt|pptx|powerpoint).*(into|to).*(html|web)",
+                    "(create|write|build).*(talk|keynote|workshop).*(deck|slides)",
+                    "(design|improve|enhance).*(presentation|slides)",
+                    "(present|showcase).*(project|product|idea)"
+                ]
+            }
+        },
+        "investor-materials": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Create and update pitch decks, one-pagers, investor memos, accelerator applications, financial models, and fundraising materials",
+            "promptTriggers": {
+                "keywords": [
+                    "pitch deck",
+                    "investor deck",
+                    "fundraising",
+                    "investor memo",
+                    "one-pager",
+                    "executive summary",
+                    "financial model",
+                    "projections",
+                    "forecast",
+                    "use of funds",
+                    "milestone plan",
+                    "accelerator application",
+                    "incubator",
+                    "investor materials",
+                    "fundraising materials",
+                    "term sheet",
+                    "cap table",
+                    "valuation",
+                    "raise",
+                    "funding round",
+                    "pre-seed",
+                    "seed",
+                    "series a"
+                ],
+                "intentPatterns": [
+                    "(create|build|write|make).*(pitch|investor|fundraising).*(deck|materials)",
+                    "(create|write|draft).*(investor memo|one-pager|executive summary)",
+                    "(build|create|design).*(financial model|projections|forecast)",
+                    "(create|make).*(use of funds|milestone plan)",
+                    "(apply to|application for).*(accelerator|incubator|yc)",
+                    "(raising|raise).*(money|funding|capital|round)",
+                    "(investor|fundraising|funding).*(materials|documents|deck)",
+                    "(term sheet|cap table|valuation).*(negotiation|review)"
+                ]
+            }
+        },
+        "market-research": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Conduct market research, competitive analysis, investor due diligence, and industry intelligence with source attribution and decision-oriented summaries",
+            "promptTriggers": {
+                "keywords": [
+                    "market research",
+                    "market sizing",
+                    "TAM",
+                    "SAM",
+                    "SOM",
+                    "competitive analysis",
+                    "competitor research",
+                    "competitor comparison",
+                    "investor research",
+                    "investor diligence",
+                    "fund research",
+                    "VC research",
+                    "industry research",
+                    "industry analysis",
+                    "market analysis",
+                    "technology research",
+                    "vendor research",
+                    "due diligence",
+                    "market opportunity",
+                    "market trends",
+                    "market intelligence",
+                    "competitive intelligence"
+                ],
+                "intentPatterns": [
+                    "(research|analyze).*(market|competitor|industry)",
+                    "(size|estimate).*(market|TAM|SAM|SOM)",
+                    "(research|look into).*(investor|fund|VC)",
+                    "(compare|analysis).*(competitor|competition)",
+                    "(evaluate|assess|research).*(technology|vendor|tool)",
+                    "(due diligence|dd).*(company|market|competitor)",
+                    "(understand|learn about).*(market|industry|category)",
+                    "(what's the market|how big is the market|who are the competitors)"
+                ]
+            }
+        },
+        "tdd-workflow": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Enforce test-driven development with 80%+ coverage including unit, integration, and E2E tests when writing features, fixing bugs, or refactoring",
+            "promptTriggers": {
+                "keywords": [
+                    "test",
+                    "testing",
+                    "write test",
+                    "create test",
+                    "unit test",
+                    "integration test",
+                    "e2e test",
+                    "test coverage",
+                    "TDD",
+                    "test-driven development",
+                    "jest",
+                    "vitest",
+                    "playwright",
+                    "testing-library",
+                    "mock",
+                    "spec",
+                    "test file"
+                ],
+                "intentPatterns": [
+                    "(write|create|add).*(test|spec)",
+                    "(test|testing).*(feature|function|component|api)",
+                    "(run|execute).*(test|tests)",
+                    "(check|verify).*(coverage|test coverage)",
+                    "(set up|configure).*(testing|jest|vitest|playwright)",
+                    "(write tests first|test first|tdd)",
+                    "(mock|stub).*(function|api|service)",
+                    "(unit|integration|e2e).*(test|testing)"
+                ]
+            }
+        },
+        "verification-loop": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Comprehensive verification system for Claude Code sessions with build, type check, lint, tests, security scan, and diff review",
+            "promptTriggers": {
+                "keywords": [
+                    "verify",
+                    "verification",
+                    "check quality",
+                    "quality check",
+                    "quality gates",
+                    "pre-commit check",
+                    "pre-pr check",
+                    "build check",
+                    "type check",
+                    "lint check",
+                    "test check",
+                    "security scan",
+                    "code review",
+                    "ready for pr",
+                    "ready to merge"
+                ],
+                "intentPatterns": [
+                    "(run|execute).*(verification|verify|check)",
+                    "(check|verify).*(quality|code|build|tests)",
+                    "(is it|are we).*(ready|good to go).*pr",
+                    "(before|pre).*(commit|pr|merge)",
+                    "(review|audit).*(code|changes)",
+                    "(security|secret).*(scan|check)",
+                    "(run all checks|full verification)"
+                ]
+            }
+        },
+        "strategic-compact": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Suggests manual context compaction at logical intervals to preserve context through task phases rather than arbitrary auto-compaction",
+            "promptTriggers": {
+                "keywords": [
+                    "compact",
+                    "context",
+                    "token limit",
+                    "context limit",
+                    "session length",
+                    "long session",
+                    "save context",
+                    "preserve context"
+                ],
+                "intentPatterns": [
+                    "(compact|save).*(context|session)",
+                    "(running out of|approaching).*(tokens|context limit)",
+                    "(long session|too much context)",
+                    "(start fresh|clean up).*(context|session)",
+                    "(phase|milestone).*(complete|done)"
+                ]
+            }
+        },
+        "agent-harness-construction": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Design and optimize AI agent action spaces, tool definitions, and observation formatting for higher completion rates",
+            "promptTriggers": {
+                "keywords": [
+                    "agent",
+                    "agent design",
+                    "action space",
+                    "tool definition",
+                    "observation format",
+                    "agent optimization",
+                    "completion rate",
+                    "agent benchmark",
+                    "tool design",
+                    "agent architecture",
+                    "ReAct agent",
+                    "function calling"
+                ],
+                "intentPatterns": [
+                    "(design|build|create).*(agent|action space|tool)",
+                    "(optimize|improve).*(agent|completion rate)",
+                    "(define|specify).*(tool|observation|action)",
+                    "(agent|bot).*(architecture|design|structure)",
+                    "(benchmark|test).*(agent|performance)"
+                ]
+            }
+        },
+        "agentic-engineering": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Operate as an agentic engineer using eval-first execution, decomposition, and cost-aware model routing",
+            "promptTriggers": {
+                "keywords": [
+                    "agentic",
+                    "autonomous",
+                    "agent task",
+                    "agent execution",
+                    "agent workflow",
+                    "task decomposition",
+                    "eval-first",
+                    "agent planning",
+                    "multi-agent",
+                    "agent coordination",
+                    "agent system"
+                ],
+                "intentPatterns": [
+                    "(run|execute).*(agent|autonomous task)",
+                    "(break down|decompose).*(task|problem)",
+                    "(plan|design).*(agent|autonomous system)",
+                    "(coordinate|manage).*(multiple agents|multi-agent)",
+                    "(implement|build).*(agent workflow|system)"
+                ]
+            }
+        },
+        "ai-first-engineering": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Engineering operating model for teams where AI agents generate a large share of implementation output",
+            "promptTriggers": {
+                "keywords": [
+                    "ai-first",
+                    "ai driven development",
+                    "ai engineering",
+                    "ai team",
+                    "ai workflow",
+                    "ai-assisted coding",
+                    "ai development",
+                    "claude-powered",
+                    "llm engineering"
+                ],
+                "intentPatterns": [
+                    "(build|create).*(ai-first|ai-driven|ai-powered)",
+                    "(engineering with|using).*(ai|claude|llm)",
+                    "(ai|claude).*(engineering|development|workflow)",
+                    "(team|organization).*(ai-first|ai-driven)"
+                ]
+            }
+        },
+        "api-design": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "REST API design patterns including resource naming, status codes, pagination, filtering, error responses, versioning, and rate limiting",
+            "promptTriggers": {
+                "keywords": [
+                    "API design",
+                    "REST API",
+                    "RESTful",
+                    "endpoint design",
+                    "resource naming",
+                    "API versioning",
+                    "status codes",
+                    "pagination",
+                    "filtering",
+                    "rate limiting",
+                    "API best practices",
+                    "API patterns"
+                ],
+                "intentPatterns": [
+                    "(design|create|build).*(API|endpoint|REST)",
+                    "(naming|versioning).*(resources|API)",
+                    "(implement|add).*(pagination|filtering|rate limiting)",
+                    "(API|REST).*(design|patterns|best practices)"
+                ]
+            }
+        },
+        "continuous-agent-loop": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Patterns for continuous autonomous agent loops with quality gates, evals, and recovery controls",
+            "promptTriggers": {
+                "keywords": [
+                    "agent loop",
+                    "continuous agent",
+                    "autonomous loop",
+                    "agent workflow",
+                    "quality gate",
+                    "agent evaluation",
+                    "agent recovery",
+                    "self-improving agent",
+                    "autonomous system",
+                    "agent feedback"
+                ],
+                "intentPatterns": [
+                    "(create|build|design).*(agent loop|autonomous agent)",
+                    "(continuous|running).*(agent|autonomous)",
+                    "(quality gate|evaluation).*(agent|system)",
+                    "(self-improving|self-correcting).*(agent|system)",
+                    "(feedback|recovery).*(agent|autonomous)"
+                ]
+            }
+        },
+        "continuous-learning": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Instinct-based learning system that observes sessions via hooks, creates atomic instincts with confidence scoring, and evolves them into skills/commands/agents (v1)",
+            "promptTriggers": {
+                "keywords": [
+                    "continuous learning",
+                    "learn from session",
+                    "instincts",
+                    "session learning",
+                    "adaptive learning",
+                    "behavior extraction",
+                    "pattern learning",
+                    "skill evolution"
+                ],
+                "intentPatterns": [
+                    "(learn|extract).*(pattern|behavior|instinct)",
+                    "(evolve|improve).*(skills|knowledge)",
+                    "(adapt|adjust).*(based on|from).*(session|history)",
+                    "(continuous|automatic).*(learning|improvement)"
+                ]
+            }
+        },
+        "continuous-learning-v2": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Instinct-based learning system v2.1 with project-scoped instincts, confidence scoring, and evolution into skills/commands/agents",
+            "promptTriggers": {
+                "keywords": [
+                    "continuous learning v2",
+                    "instinct-based learning",
+                    "project-scoped instincts",
+                    "confidence scoring",
+                    "instinct library",
+                    "evolve instincts",
+                    "promote instinct",
+                    "global vs project instincts"
+                ],
+                "intentPatterns": [
+                    "(v2|version 2).*(learning|instinct)",
+                    "(project-scoped|scoped).*(instincts|learning)",
+                    "(promote|export|import).*(instinct|pattern)",
+                    "(evolve|transform).*(instinct).*(into|to).*(skill|agent)"
+                ]
+            }
+        },
+        "cost-aware-llm-pipeline": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Cost optimization patterns for LLM API usage including model routing by task complexity, budget tracking, retry logic, and prompt caching",
+            "promptTriggers": {
+                "keywords": [
+                    "LLM cost",
+                    "cost optimization",
+                    "model routing",
+                    "budget tracking",
+                    "token optimization",
+                    "prompt caching",
+                    "API cost",
+                    "claude cost",
+                    "openai cost",
+                    "cost reduction",
+                    "cheaper models"
+                ],
+                "intentPatterns": [
+                    "(reduce|optimize|cut).*(cost|token|spending)",
+                    "(route|switch).*(model|claude|gpt)",
+                    "(cache|prompt).*(optimization|efficiency)",
+                    "(budget|track).*(API|LLM).*(cost|usage)",
+                    "(cheaper|less expensive).*(model|API)"
+                ]
+            }
+        },
+        "investor-outreach": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Draft cold emails, warm intro blurbs, follow-ups, update emails, and investor communications for fundraising",
+            "promptTriggers": {
+                "keywords": [
+                    "investor email",
+                    "cold email",
+                    "warm intro",
+                    "investor outreach",
+                    "fundraising email",
+                    "follow-up email",
+                    "investor update",
+                    "VC email",
+                    "angel investor",
+                    "investor communication",
+                    "pitch email"
+                ],
+                "intentPatterns": [
+                    "(draft|write|create).*(investor|VC).*(email|outreach)",
+                    "(cold email|warm intro).*(to|for).*(investor|VC)",
+                    "(follow up|update).*(investor|funder)",
+                    "(reach out|contact).*(investor|VC|angel)",
+                    "(fundraising|raising).*(email|outreach|communication)"
+                ]
+            }
+        }
+    },
+    "notes": {
+        "enforcement_types": {
+            "suggest": "Skill suggestion appears but doesn't block execution",
+            "block": "Requires skill to be used before proceeding (guardrail)",
+            "warn": "Shows warning but allows proceeding"
+        },
+        "priority_levels": {
+            "critical": "Highest - Always trigger when matched",
+            "high": "Important - Trigger for most matches",
+            "medium": "Moderate - Trigger for clear matches",
+            "low": "Optional - Trigger only for explicit matches"
+        },
+        "customization": {
+            "pathPatterns": "Adjust to match your project structure",
+            "keywords": "Add domain-specific terms relevant to your project",
+            "intentPatterns": "Use regex for flexible user intent matching"
+        }
+    }
+}

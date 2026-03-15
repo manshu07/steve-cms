@@ -1,0 +1,289 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'assets/logo-icon.png' %}">
+    <title>{{ seo.title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <meta name="description" content="{{ seo.description }}">
+    {% if seo.og_title %}
+    <meta property="og:title" content="{{ seo.og_title }}">
+    {% endif %}
+    {% if seo.og_description %}
+    <meta property="og:description" content="{{ seo.og_description }}">
+    {% endif %}
+    {% if seo.image %}
+    <meta property="og:image" content="{{ seo.image }}">
+    {% endif %}
+    {% if seo.url %}
+    <meta property="og:url" content="{{ seo.url }}">
+    {% endif %}
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+</head>
+<body>
+    <main class="min-h-screen bg-background text-foreground overflow-x-hidden">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden">
+            <header class="relative z-20 flex items-center justify-between px-6 md:px-12 lg:px-20 py-5 max-w-7xl mx-auto">
+                <div class="flex items-center gap-3">
+                    <img src="{% static 'assets/logo-icon.png' %}" alt="BeyondCode AI" class="h-9">
+                    <span class="font-bold text-foreground text-lg tracking-tight">BeyondCode</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="#how-it-works" class="items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-secondary h-11 px-6 py-2 hidden md:inline-flex text-muted-foreground hover:text-foreground text-sm">How it works</a>
+                    <a href="https://calendly.com/henri-beyondcode/ai-collections-demo" target="_blank" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:shadow-lg h-11 bg-primary text-primary-foreground hover:bg-primary/90 text-sm px-5 py-2.5">Book a Quick Demo<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4 ml-1.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+                </div>
+            </header>
+
+            <div class="relative z-10 text-center px-6 pt-8 pb-6 md:pt-12 md:pb-8 max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-accent text-accent-foreground text-sm font-medium rounded-full mb-8">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    AI-Powered Debt Collection Platform
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 text-foreground tracking-tight">Bring Your <span class="text-primary">Money Home</span></h1>
+                <p class="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">Automate debtor outreach across active portfolios so every account is contacted on time—without growing your team or losing compliance control.</p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+                    <a href="https://calendly.com/henri-beyondcode/ai-collections-demo" target="_blank" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:shadow-lg h-11 bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base font-semibold shadow-lg shadow-primary/20">Book a Quick Demo<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-5 h-5 ml-2"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+                    <a href="#how-it-works" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-transparent hover:border-primary/50 h-11 px-8 py-6 text-base border-border text-foreground hover:bg-secondary">See How It Works</a>
+                </div>
+
+                <div class="py-6">
+                    <p class="text-center text-muted-foreground text-sm font-medium tracking-wide uppercase mb-6">Trusted by EU-regulated financial institutions</p>
+                    <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 px-6">
+                        <span class="text-muted-foreground/60 font-bold text-sm tracking-widest uppercase">BONDORA</span>
+                        <span class="text-muted-foreground/60 font-bold text-sm tracking-widest uppercase">RAHA24</span>
+                        <span class="text-muted-foreground/60 font-bold text-sm tracking-widest uppercase">BB-FINANCE</span>
+                        <span class="text-muted-foreground/60 font-bold text-sm tracking-widest uppercase">HYBA FINANCE</span>
+                        <span class="text-muted-foreground/60 font-bold text-sm tracking-widest uppercase">THEMIS LAW BUREAU</span>
+                        <span class="text-muted-foreground/60 font-bold text-sm tracking-widest uppercase">BALTASAR LEASING</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- One Platform Section -->
+        <section class="section-padding bg-background">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">One Platform for Compliant AI Collections</h2>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Unify your outreach, compliance, and analytics in one platform—saving time and cutting costs.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="rounded-xl p-7 border transition-all bg-card text-card-foreground border-border hover:border-primary/30 hover:shadow-md">
+                        <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 bg-accent">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap w-5 h-5 text-primary"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Automated Outreach at Scale</h3>
+                        <p class="text-sm leading-relaxed text-muted-foreground">Every debtor on your list gets contacted on time, every cycle. Scale from hundreds to thousands of calls without adding headcount.</p>
+                    </div>
+                    <div class="rounded-xl p-7 border transition-all bg-primary text-primary-foreground border-primary shadow-lg">
+                        <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 bg-primary-foreground/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-5 h-5 text-primary-foreground"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">GDPR-Compliant by Design</h3>
+                        <p class="text-sm leading-relaxed text-primary-foreground/80">Calling windows, retry rules, and consent guardrails enforced automatically. Audit-ready evidence logs for every interaction.</p>
+                    </div>
+                    <div class="rounded-xl p-7 border transition-all bg-card text-card-foreground border-border hover:border-primary/30 hover:shadow-md">
+                        <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 bg-accent">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column w-5 h-5 text-primary"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Predictable Recovery Operations</h3>
+                        <p class="text-sm leading-relaxed text-muted-foreground">Turn collections into measurable weekly output with real-time analytics, coverage reports, and structured outcome tracking.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real Results Section -->
+        <section class="section-padding bg-secondary/50">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-8">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-accent text-accent-foreground text-sm font-medium rounded-full mb-6">Case Study · 1 Month Results</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Real Results From a Live Portfolio</h2>
+                    <p class="text-muted-foreground text-lg max-w-xl mx-auto">Measurable impact from a single month of automated AI collection on an EU-regulated portfolio.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-card rounded-xl border border-border p-6 text-center hover:shadow-md transition-shadow">
+                        <div class="text-2xl md:text-3xl font-bold text-foreground mb-1">4,000</div>
+                        <div class="text-muted-foreground text-xs font-medium">AI Calls Completed</div>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6 text-center hover:shadow-md transition-shadow">
+                        <div class="text-2xl md:text-3xl font-bold text-foreground mb-1">€20,000</div>
+                        <div class="text-muted-foreground text-xs font-medium">In Promised Payments</div>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6 text-center hover:shadow-md transition-shadow">
+                        <div class="text-2xl md:text-3xl font-bold text-foreground mb-1">150</div>
+                        <div class="text-muted-foreground text-xs font-medium">Debtors Reached</div>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6 text-center hover:shadow-md transition-shadow">
+                        <div class="text-2xl md:text-3xl font-bold text-foreground mb-1">87</div>
+                        <div class="text-muted-foreground text-xs font-medium">Hours Saved</div>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6 text-center hover:shadow-md transition-shadow">
+                        <div class="text-2xl md:text-3xl font-bold text-foreground mb-1">0</div>
+                        <div class="text-muted-foreground text-xs font-medium">Manual Work Required</div>
+                    </div>
+                </div>
+                <div class="mt-10 text-center">
+                    <a href="https://calendly.com/henri-beyondcode/ai-collections-demo" target="_blank">
+                        <button class="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-10 py-4 rounded-lg text-base transition-all duration-300 shadow-lg hover:shadow-xl">See If It Fits</button>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video & Platform Preview Section -->
+        <section class="section-padding bg-background">
+            <div class="max-w-5xl mx-auto px-6 space-y-12">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Hear From a Law Bureau Running Live Collections</h2>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">See how Themis Law Bureau uses BeyondCode to automate debtor outreach at scale.</p>
+                    <div class="max-w-4xl mx-auto">
+                        <div class="relative aspect-video rounded-xl overflow-hidden border border-border shadow-lg">
+                            <iframe src="https://www.youtube.com/embed/qltjKKA6wFc?controls=1&rel=0" title="Client testimonial – Themis Law Bureau" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute inset-0 w-full h-full"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <h3 class="text-2xl md:text-3xl font-bold text-foreground mb-4">Inside the Platform</h3>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">A single dashboard to monitor outreach, track outcomes, and review audit logs.</p>
+                    <div class="rounded-2xl overflow-hidden border-2 border-primary/15 shadow-2xl shadow-primary/10 bg-background">
+                        <div class="flex items-center gap-2 px-4 py-3 bg-accent border-b border-border">
+                            <div class="flex gap-1.5">
+                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            </div>
+                            <div class="flex-1 flex justify-center">
+                                <div class="bg-background rounded-md px-4 py-1 text-xs text-muted-foreground font-mono border border-border">app.beyondcode.ai/dashboard</div>
+                            </div>
+                        </div>
+                        <img src="{% static 'assets/dashboard-preview.png' %}" alt="BeyondCode AI Platform Dashboard" class="w-full h-auto">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section-padding bg-background">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Transform Your Debt Collection With Our Compliant AI Solution</h2>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Everything you need to automate, scale, and audit your collection operations—in one platform.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="bg-card rounded-xl border border-border p-6 hover:border-primary/30 hover:shadow-md transition-all">
+                        <h3 class="font-bold text-foreground mb-2">GDPR-Compliant Calling</h3>
+                        <p class="text-muted-foreground text-sm">Automated enforcement of calling windows, consent rules, and data retention policies.</p>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6 hover:border-primary/30 hover:shadow-md transition-all">
+                        <h3 class="font-bold text-foreground mb-2">Personalized Scripts & Tone</h3>
+                        <p class="text-muted-foreground text-sm">Tailored conversation flows per debtor profile, segment, and debt stage.</p>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6 hover:border-primary/30 hover:shadow-md transition-all">
+                        <h3 class="font-bold text-foreground mb-2">Automated Conversations</h3>
+                        <p class="text-muted-foreground text-sm">Identity verification, debt notification, and payment agreement—handled automatically.</p>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6 hover:border-primary/30 hover:shadow-md transition-all">
+                        <h3 class="font-bold text-foreground mb-2">Zero Manual Dialing</h3>
+                        <p class="text-muted-foreground text-sm">Free your team from repetitive chasing. Humans only for exceptions and disputes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="section-padding bg-secondary/50">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">How It Works</h2>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Four structured steps from onboarding to go-live. Built for fast deployment and clear operational readiness.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-card rounded-xl border border-border p-6">
+                        <div class="text-primary font-bold text-lg mb-2">01</div>
+                        <h3 class="font-bold text-foreground mb-2">Launch Sprint</h3>
+                        <p class="text-muted-foreground text-sm">One guided setup window — live before we end. Accounts + billing ready in days, not months.</p>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6">
+                        <div class="text-primary font-bold text-lg mb-2">02</div>
+                        <h3 class="font-bold text-foreground mb-2">Telecom Clearance</h3>
+                        <p class="text-muted-foreground text-sm">Telephony KYC fast-track with country checklist, path, and next actions. No bureaucratic delays.</p>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6">
+                        <div class="text-primary font-bold text-lg mb-2">03</div>
+                        <h3 class="font-bold text-foreground mb-2">System Alignment</h3>
+                        <p class="text-muted-foreground text-sm">Inputs → decisions → outputs. We map the data flow and connect in phases.</p>
+                    </div>
+                    <div class="bg-card rounded-xl border border-border p-6">
+                        <div class="text-primary font-bold text-lg mb-2">04</div>
+                        <h3 class="font-bold text-foreground mb-2">Go-Live Readiness</h3>
+                        <p class="text-muted-foreground text-sm">End-to-end test until stable + handover pack. You're operational with full documentation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commitment Section -->
+        <section class="section-padding bg-background">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="bg-card rounded-xl border border-border p-8 md:p-12 text-center">
+                    <div class="w-16 h-16 rounded-xl bg-primary flex items-center justify-center mb-6 mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-8 h-8 text-primary-foreground"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5,19 5a1 1 0 0 1 1 1z"></path></svg>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Operational Delivery Commitment</h2>
+                    <p class="text-muted-foreground text-lg mb-8">Within 40 business days of payment, for the agreed rollout scope:</p>
+                    <div class="grid sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto mb-8">
+                        <div class="flex items-start gap-3 bg-accent rounded-lg p-4">
+                            <span class="text-primary">✓</span>
+                            <span class="text-foreground text-sm">100% contact-attempt coverage across the approved debtor list</span>
+                        </div>
+                        <div class="flex items-start gap-3 bg-accent rounded-lg p-4">
+                            <span class="text-primary">✓</span>
+                            <span class="text-foreground text-sm">Auditable evidence logs for attempts, timestamps, and outcomes</span>
+                        </div>
+                        <div class="flex items-start gap-3 bg-accent rounded-lg p-4">
+                            <span class="text-primary">✓</span>
+                            <span class="text-foreground text-sm">30 days of remediation for delivery gaps</span>
+                        </div>
+                        <div class="flex items-start gap-3 bg-accent rounded-lg p-4">
+                            <span class="text-primary">✓</span>
+                            <span class="text-foreground text-sm">Implementation fee reimbursement if standards remain unmet</span>
+                        </div>
+                    </div>
+                    <a href="https://calendly.com/henri-beyondcode/ai-collections-demo" target="_blank">
+                        <button class="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-10 py-4 rounded-lg text-base transition-all duration-300 shadow-lg">See If It Fits</button>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 bg-card border-t border-border">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-3">
+                        <img src="{% static 'assets/logo-icon.png' %}" alt="BeyondCode" class="w-8 h-8">
+                        <span class="font-bold text-foreground">BeyondCode AI</span>
+                    </div>
+                    <div class="flex items-center gap-6 text-sm text-muted-foreground">
+                        <a class="hover:text-foreground" href="/privacy-policy">Privacy Policy</a>
+                        <a class="hover:text-foreground" href="/terms-conditions">Terms & Conditions</a>
+                        <a class="hover:text-foreground" href="/sitemap.xml">Sitemap</a>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-border text-center">
+                    <p class="text-muted-foreground text-sm">© 2026 BeyondCode AI. Designed for EU regulated operations.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

@@ -1,0 +1,220 @@
+{% extends "marketing/cms/base.html" %}
+{% load static %}
+{% load form_extras %}
+
+{% block title %}{{ mode|title }} Page{% endblock %}
+
+{% block extra_css %}
+<style>
+.cms-blocks-builder {
+    min-height: 400px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    {% if mode == 'edit' and page %}
+    <div class="mb-8">
+        <a href="{% url 'cms-page-list' %}" class="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6 6"/><path d="M8.6 8.6a10 10 0 1 0 14.1 0l-4.3 4.3a10 10 0 0 1-14.1 0l-4.3-4.3A10 10 0 0 1 8.6 8.6z"/></svg>
+            Back to Pages
+        </a>
+    </div>
+    {% else %}
+    <div class="mb-8">
+        <a href="{% url 'cms-page-list' %}" class="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6 6"/><path d="M8.6 8.6a10 10 0 1 0 14.1 0l-4.3 4.3a10 10 0 0 1-14.1 0l-4.3-4.3A10 10 0 0 1 8.6 8.6z"/></svg>
+            Back to Pages
+        </a>
+    </div>
+    {% endif %}
+
+    <h1 class="text-3xl font-bold text-foreground mb-8">{{ mode|title }} Page</h1>
+
+    <!-- Delete confirmation banner (outside main form) -->
+    {% if mode == 'edit' and page %}
+    <form action="{% url 'cms-page-delete' page.id %}" method="post" class="cms-delete-banner">
+        {% csrf_token %}
+        <p>⚠️ Deleting this page is permanent and cannot be undone.</p>
+        <div class="cms-delete-banner-actions">
+            <button type="submit" class="cms-btn cms-btn-sm cms-btn-destructive">Delete Page</button>
+            <button type="button" class="cms-btn cms-btn-sm cms-btn-ghost" onclick="this.closest('form').style.display='none'">Cancel</button>
+        </div>
+    </form>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="save">
+
+        <!-- Top action bar -->
+        <div class="cms-action-bar cms-action-bar-top">
+            <div class="cms-action-bar-left">
+                <a href="{% url 'cms-page-list' %}" class="cms-btn cms-btn-ghost">Cancel</a>
+            </div>
+            <div class="cms-action-bar-right">
+                {% if mode == 'edit' %}
+                <button type="submit" name="action" value="draft" class="cms-btn cms-btn-outline">Save Draft</button>
+                {% endif %}
+                <button type="submit" name="action" value="publish" class="cms-btn cms-btn-primary">
+                    {{ mode|title }} Page
+                </button>
+            </div>
+        </div>
+
+        <!-- Basic fields -->
+        <div class="cms-section">
+            <div class="cms-section-content open">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_title">Title *</label>
+                        {{ form.title|add_class:"cms-form-input" }}
+                        {% if form.title.errors %}
+                        <p class="cms-form-error">{{ form.title.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_slug">Slug *</label>
+                        {{ form.slug|add_class:"cms-form-input" }}
+                        {% if form.slug.errors %}
+                        <p class="cms-form-error">{{ form.slug.errors.0 }}</p>
+                        {% else %}
+                        <p class="cms-form-hint">The URL path for this page (e.g., "about")</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_status">Status</label>
+                        {{ form.status|add_class:"cms-form-select" }}
+                    </div>
+
+                    {% if mode == 'edit' %}
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_publish_at">Publish Date</label>
+                        {{ form.publish_at|add_class:"cms-form-input" }}
+                        <p class="cms-form-hint">Leave blank to publish immediately</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Primary Image -->
+        <div class="cms-section">
+            <div class="cms-section-content open">
+                <div class="cms-form-group">
+                    <label class="cms-form-label" for="id_primary_image">Primary Image URL</label>
+                    <div class="cms-upload-widget" data-folder="cms/pages">
+                        {{ form.primary_image }}
+                        <div class="cms-upload-preview" {% if form.primary_image.value %}style="display:block;"{% endif %}>
+                            {% if form.primary_image.value %}
+                            <img src="{{ form.primary_image.value }}" alt="Preview" class="cms-upload-preview">
+                            {% else %}
+                            <div class="text-center py-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 text-muted-foreground"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <p class="text-sm text-muted-foreground">Upload or enter image URL</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <input type="file" accept="image/*" class="hidden" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Blocks -->
+        <div class="cms-section">
+            <div class="cms-section-content open">
+                <div class="cms-form-group">
+                    <label class="cms-form-label">Content Blocks</label>
+                    <p class="cms-form-hint mb-4">Build your page content using blocks. Rich text, CTAs, features, and more.</p>
+                    {{ form.blocks_json }}
+                    <div data-blocks-builder></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Section -->
+        <div class="cms-section">
+            <div class="cms-section-header" onclick="toggleSection('seo-section')">
+                <h2 class="cms-section-title">SEO Settings</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform transition-transform" id="seo-section-icon"><path d="m6 9 6 6 6 6-6"/><path d="m18 15-6-6-6-6"/></svg>
+            </div>
+            <div class="cms-section-content" id="seo-section">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_seo_title">SEO Title</label>
+                        {{ form.seo_title|add_class:"cms-form-input" }}
+                        <p class="cms-form-hint">Override the page title for search engines</p>
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_seo_description">SEO Description</label>
+                        {{ form.seo_description|add_class:"cms-form-textarea" }}
+                        <p class="cms-form-hint">A short description for search results (160 characters)</p>
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_og_title">OG Title</label>
+                        {{ form.og_title|add_class:"cms-form-input" }}
+                        <p class="cms-form-hint">Override title for social media sharing</p>
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_og_description">OG Description</label>
+                        {{ form.og_description|add_class:"cms-form-textarea" }}
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_og_image">OG Image URL</label>
+                        {{ form.og_image|add_class:"cms-form-input" }}
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_twitter_image">Twitter Image URL</label>
+                        {{ form.twitter_image|add_class:"cms-form-input" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom action bar -->
+        <div class="cms-action-bar cms-action-bar-bottom">
+            <div class="cms-action-bar-left">
+                <a href="{% url 'cms-page-list' %}" class="cms-btn cms-btn-ghost">Cancel</a>
+            </div>
+            <div class="cms-action-bar-right">
+                {% if mode == 'edit' %}
+                <button type="submit" name="action" value="draft" class="cms-btn cms-btn-outline">Save Draft</button>
+                {% endif %}
+                <button type="submit" name="action" value="publish" class="cms-btn cms-btn-primary">
+                    {{ mode|title }} Page
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleSection(sectionId) {
+    const content = document.getElementById(sectionId);
+    const icon = document.getElementById(sectionId + '-icon');
+    if (content) {
+        content.classList.toggle('open');
+        if (icon) {
+            icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+    }
+}
+</script>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/cms-editor.js' %}"></script>
+<script src="{% static 'js/cms-json.js' %}"></script>
+{% endblock %}

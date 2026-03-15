@@ -1,0 +1,213 @@
+{% extends "marketing/cms/base.html" %}
+{% load static %}
+{% load form_extras %}
+
+{% block title %}{{ mode|title }} Post{% endblock %}
+
+{% block extra_css %}
+<style>
+.cms-blocks-builder { min-height: 400px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+        <a href="{% url 'cms-post-list' %}" class="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6 6"/><path d="M8.6 8.6a10 10 0 1 0 14.1 0l-4.3 4.3a10 10 0 0 1-14.1 0l-4.3-4.3A10 10 0 0 1 8.6 8.6z"/></svg>
+            Back to Posts
+        </a>
+    </div>
+
+    <h1 class="text-3xl font-bold text-foreground mb-8">{{ mode|title }} Post</h1>
+
+    {% if mode == 'edit' and post %}
+    <form action="{% url 'cms-post-delete' post.id %}" method="post" class="cms-delete-banner">
+        {% csrf_token %}
+        <p>⚠️ Deleting this post is permanent.</p>
+        <div class="cms-delete-banner-actions">
+            <button type="submit" class="cms-btn cms-btn-sm cms-btn-destructive">Delete Post</button>
+            <button type="button" class="cms-btn cms-btn-sm cms-btn-ghost" onclick="this.closest('form').style.display='none'">Cancel</button>
+        </div>
+    </form>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="save">
+
+        <div class="cms-action-bar cms-action-bar-top">
+            <div class="cms-action-bar-left">
+                <a href="{% url 'cms-post-list' %}" class="cms-btn cms-btn-ghost">Cancel</a>
+            </div>
+            <div class="cms-action-bar-right">
+                {% if mode == 'edit' %}
+                <button type="submit" name="action" value="draft" class="cms-btn cms-btn-outline">Save Draft</button>
+                {% endif %}
+                <button type="submit" name="action" value="publish" class="cms-btn cms-btn-primary">{{ mode|title }} Post</button>
+            </div>
+        </div>
+
+        <!-- Basic fields -->
+        <div class="cms-section">
+            <div class="cms-section-content open">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_title">Title *</label>
+                        {{ form.title|add_class:"cms-form-input" }}
+                        {% if form.title.errors %}<p class="cms-form-error">{{ form.title.errors.0 }}</p>{% endif %}
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_slug">Slug *</label>
+                        {{ form.slug|add_class:"cms-form-input" }}
+                        {% if form.slug.errors %}<p class="cms-form-error">{{ form.slug.errors.0 }}</p>{% else %}
+                        <p class="cms-form-hint">The URL path (e.g., "my-first-post")</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_author_name">Author Name</label>
+                        {{ form.author_name|add_class:"cms-form-input" }}
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_status">Status</label>
+                        {{ form.status|add_class:"cms-form-select" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cover Image -->
+        <div class="cms-section">
+            <div class="cms-section-content open">
+                <div class="cms-form-group">
+                    <label class="cms-form-label" for="id_cover_image">Cover Image URL</label>
+                    <div class="cms-upload-widget" data-folder="cms/blog">
+                        {{ form.cover_image }}
+                        <div class="cms-upload-preview" {% if form.cover_image.value %}style="display:block;"{% endif %}>
+                            {% if form.cover_image.value %}
+                            <img src="{{ form.cover_image.value }}" alt="Preview" class="cms-upload-preview">
+                            {% endif %}
+                        </div>
+                        <input type="file" accept="image/*" class="hidden" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Excerpt -->
+        <div class="cms-section">
+            <div class="cms-section-header" onclick="toggleSection('excerpt-section')">
+                <h2 class="cms-section-title">Excerpt</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform transition-transform" id="excerpt-section-icon"><path d="m6 9 6 6 6 6-6"/><path d="m18 15-6-6-6-6"/></svg>
+            </div>
+            <div class="cms-section-content" id="excerpt-section">
+                <div class="cms-form-group">
+                    <label class="cms-form-label" for="id_excerpt">Short Description</label>
+                    {{ form.excerpt|add_class:"cms-form-textarea" }}
+                    <p class="cms-form-hint">A brief summary for blog listing cards (auto-generated if left blank)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories & Tags -->
+        <div class="cms-section">
+            <div class="cms-section-content open">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_categories">Categories</label>
+                        {{ form.categories|add_class:"cms-form-select" }}
+                        <p class="cms-form-hint">Hold Ctrl/Cmd to select multiple</p>
+                    </div>
+
+                    <div class="cms-form-group">
+                        <label class="cms-form-label" for="id_tags">Tags</label>
+                        {{ form.tags|add_class:"cms-form-select" }}
+                        <p class="cms-form-hint">Hold Ctrl/Cmd to select multiple</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Blocks -->
+        <div class="cms-section">
+            <div class="cms-section-content open">
+                <div class="cms-form-group">
+                    <label class="cms-form-label">Content Blocks</label>
+                    {{ form.blocks_json }}
+                    <div data-blocks-builder></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="cms-section">
+            <div class="cms-section-header" onclick="toggleSection('seo-section')">
+                <h2 class="cms-section-title">SEO Settings</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform transition-transform" id="seo-section-icon"><path d="m6 9 6 6 6 6-6"/><path d="m18 15-6-6-6-6"/></svg>
+            </div>
+            <div class="cms-section-content" id="seo-section">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="cms-form-group">
+                        <label class="cms-form-label">SEO Title</label>
+                        {{ form.seo_title|add_class:"cms-form-input" }}
+                    </div>
+                    <div class="cms-form-group">
+                        <label class="cms-form-label">SEO Description</label>
+                        {{ form.seo_description|add_class:"cms-form-textarea" }}
+                    </div>
+                    <div class="cms-form-group">
+                        <label class="cms-form-label">OG Title</label>
+                        {{ form.og_title|add_class:"cms-form-input" }}
+                    </div>
+                    <div class="cms-form-group">
+                        <label class="cms-form-label">OG Description</label>
+                        {{ form.og_description|add_class:"cms-form-textarea" }}
+                    </div>
+                    <div class="cms-form-group">
+                        <label class="cms-form-label">OG Image</label>
+                        {{ form.og_image|add_class:"cms-form-input" }}
+                    </div>
+                    <div class="cms-form-group">
+                        <label class="cms-form-label">Twitter Image</label>
+                        {{ form.twitter_image|add_class:"cms-form-input" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cms-action-bar cms-action-bar-bottom">
+            <div class="cms-action-bar-left">
+                <a href="{% url 'cms-post-list' %}" class="cms-btn cms-btn-ghost">Cancel</a>
+            </div>
+            <div class="cms-action-bar-right">
+                {% if mode == 'edit' %}
+                <button type="submit" name="action" value="draft" class="cms-btn cms-btn-outline">Save Draft</button>
+                {% endif %}
+                <button type="submit" name="action" value="publish" class="cms-btn cms-btn-primary">{{ mode|title }} Post</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+function toggleSection(sectionId) {
+    const content = document.getElementById(sectionId);
+    const icon = document.getElementById(sectionId + '-icon');
+    if (content) {
+        content.classList.toggle('open');
+        if (icon) icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+}
+</script>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/cms-editor.js' %}"></script>
+<script src="{% static 'js/cms-json.js' %}"></script>
+{% endblock %}

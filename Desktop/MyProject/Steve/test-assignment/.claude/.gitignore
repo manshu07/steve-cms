@@ -1,0 +1,63 @@
+# Claude Code - .claude directory gitignore
+
+# Temporary files
+tmp*
+*.tmp
+*.temp
+*.log
+nul
+
+# Session state files
+hooks/state/skills-used-*.json
+hooks/state/*.json
+
+# Node modules in hooks
+hooks/node_modules/
+
+# Lock files (optional - comment out if you want to commit these)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Editor backup files
+*.swp
+*.swo
+*~
+.*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build artifacts
+*.js.map
+*.d.ts.map
+dist/
+build/
+out/
+
+# Test coverage
+coverage/
+*.lcov
+
+# Environment files (usually should be in .gitignore at root, but just in case)
+.env.local
+.env.*.local
+
+# Skill development artifacts
+skills/*/temp/
+skills/*/tmp/
+skills/*/draft/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Claude Code workspace settings (optional - user-specific)
+# settings.local.json
+
+# MCP server temporary files
+.mcp/cache/
+.mcp/tmp/

@@ -1,0 +1,24 @@
+{% extends "marketing/base.html" %}
+
+{% block content %}
+{% if page.slug == 'home' %}
+    <!-- Homepage: Render exact HTML without wrapping -->
+    {{ page.blocks_html|safe }}
+{% else %}
+    <!-- Other pages: Use standard article layout -->
+    <article class="section-padding">
+        <div class="max-w-4xl mx-auto px-6">
+            <header class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-6">{{ page.title }}</h1>
+                {% if page.primary_image %}
+                <img src="{{ page.primary_image }}" alt="{{ page.title }}" class="w-full h-auto rounded-xl border border-border mb-8">
+                {% endif %}
+            </header>
+
+            <div class="cms-content prose prose-lg max-w-none">
+                {{ page.blocks_html|safe }}
+            </div>
+        </div>
+    </article>
+{% endif %}
+{% endblock %}

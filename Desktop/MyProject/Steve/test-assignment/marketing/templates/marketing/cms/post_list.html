@@ -1,0 +1,99 @@
+{% extends "marketing/cms/base.html" %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-foreground">Blog Posts</h1>
+            <p class="text-muted-foreground">Manage your blog content</p>
+        </div>
+        <a href="{% url 'cms-post-create' %}" class="cms-btn cms-btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            New Post
+        </a>
+    </div>
+
+    {% if posts %}
+    <!-- Posts Table -->
+    <div class="cms-table-container">
+        <table class="cms-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Status</th>
+                    <th>Updated</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                <tr>
+                    <td>
+                        <a href="{% url 'cms-post-edit' post.id %}" class="text-foreground hover:text-primary font-medium">{{ post.title }}</a>
+                        {% if post.categories.all %}
+                        <div class="flex gap-1 mt-1">
+                            {% for category in post.categories.all %}
+                            {% if forloop.counter0 < 2 %}
+                            <span class="text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded">{{ category.name }}</span>
+                            {% endif %}
+                            {% endfor %}
+                            {% if post.categories.all.count > 2 %}
+                            <span class="text-xs text-muted-foreground">+{{ post.categories.all.count|add:"-2" }}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted-foreground text-sm">{{ post.author_name|default:"—" }}</td>
+                    <td>
+                        <span class="cms-badge {% if post.status == 'published' %}cms-badge-published{% elif post.status == 'draft' %}cms-badge-draft{% else %}cms-badge-scheduled{% endif %}">
+                            {{ post.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="text-muted-foreground text-sm">{{ post.updated_at|timesince }} ago</td>
+                    <td class="text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            {% if post.is_published %}
+                            <form action="{% url 'cms-post-toggle-status' post.id %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit" class="cms-btn cms-btn-sm cms-btn-ghost" title="Unpublish">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+                                </button>
+                            </form>
+                            {% else %}
+                            <form action="{% url 'cms-post-toggle-status' post.id %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit" class="cms-btn cms-btn-sm cms-btn-ghost" title="Publish">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                </button>
+                            </form>
+                            {% endif %}
+                            <a href="{% url 'cms-post-edit' post.id %}" class="cms-btn cms-btn-sm cms-btn-ghost" title="Edit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                            </a>
+                            <a href="{% if post.is_published %}{{ post.get_absolute_url }}{% endif %}" target="_blank" class="cms-btn cms-btn-sm cms-btn-ghost" title="View" {% if not post.is_published %}style="opacity:0.5;pointer-events:none;"{% endif %}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/></svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-16 bg-card border border-border rounded-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-muted-foreground"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <h3 class="text-lg font-semibold text-foreground mb-2">No posts yet</h3>
+        <p class="text-muted-foreground mb-6">Create your first blog post to get started</p>
+        <a href="{% url 'cms-post-create' %}" class="cms-btn cms-btn-primary">Create Post</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
